@@ -1,18 +1,36 @@
 <?php
 
 function calculate(string $term) {
-    $sum = 0;
-    if ($term[0] == "-" || $term[0] == '+') {
-        $term = "0" . $term;
+    $result = 0;
+
+    $number = "";
+    $index = 0;
+    while (strlen($term) > $index && is_numeric($term[$index])) {
+        $number .= $term[$index];
+        $index++;
+    } 
+
+    $result = $number;
+
+    $operator = $term[$index];
+
+    $number = "";
+    $index = 0;
+    
+    $term = explode($operator, $term)[1];
+
+    while (strlen($term) > $index && is_numeric($term[$index])) {
+        $number .= $term[$index];
+        $index++;
+    } 
+
+    switch ($operator) {
+        case "+": $result += $number; break;
+        case "-": $result -= $number; break;
+        case "*": $result *= $number; break;
+        case "/": $result /= $number; break;
     }
-    $term = str_replace("-","+-", $term);
-    $summands = explode("+", $term);
-    foreach($summands as $summand) {
-        if ($summand[0] == "-") {
-            $sum -= substr($summand, 1);
-        } else {
-            $sum += $summand;
-        }
-    }
-    return $sum;
+
+
+    return $result;
 }
